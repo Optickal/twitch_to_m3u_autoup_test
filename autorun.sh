@@ -1,1 +1,13 @@
-python3 -m pip install --upgrade pip && python3 -m pip install -r requirements.txt && python3 server.py 127.0.0.1
+
+
+#!/bin/bash
+
+echo $(dirname $0)
+
+python3 -m pip install requests
+
+cd $(dirname $0)/scripts/
+
+python3 twitch_m3ugrabber.py > ../twitch.m3u
+
+echo m3u grabbed
