@@ -52,7 +52,7 @@ def getm3u():
 print('#EXTM3U x-tvg-url="https://telerising.de/epg/easyepg-basic.gz"')
 print(banner)
 #s = requests.Session()
-with open('../youtube_channel_info.txt') as f:
+with open('../streams.txt') as f:
     for line in f:
         line = line.strip()
         if not line or line.startswith('~~'):
