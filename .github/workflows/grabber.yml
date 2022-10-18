@@ -1,12 +1,16 @@
 # This is a basic workflow to help you get started with Actions
 
-name: twitch_m3ugrabber
+name: M3U generator
 
-# Controls when the workflow will run
+# Controls when the action will run. 
 on:
   schedule:
-    - cron: '*/10 * * * *'
-  
+    - cron: '0-59/10 * * * *'
+
+  pull_request:
+    branches:
+      - main
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -22,28 +26,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # 
+      # Runs a single command using the runners shell
+      #- name: Run a one-line script
+      #  run: echo testing!
+
+      # Runs a set of commands using the runners shell 
       - name: config
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-      
-      
+          git config --global user.email "optickal@proton.me"
+          git config --global user.name "Optickal"
       - name: Main
         run: |
           pwd
-          chmod +x autorun_github.sh
-          ./autorun_github.sh
-          #cd scripts
-          #python3 twitch_m3ugrabber.py > ../twitch.m3u
-          echo "m3u grabbed"
-        
+          chmod +x autorun.sh
+          ./autorun.sh
       - name: git add
         run: |
           git add -A
-          ls -la 
-          
+          ls -la
       - name: commit & push
         run: |
-          git commit -m "links are updated"
+          git commit -m "[bot] - links are updated"
           git push
