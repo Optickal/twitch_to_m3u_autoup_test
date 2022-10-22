@@ -1,38 +1,31 @@
-from daytime import daytime
+from datetime import datetime
 import requests
-import is
+import os
 import sys
 
-@app.route(f'/playlist.m3u')
-def playlistgenerator():
-    playlist = '#EXTM3U\n'
-    with open('streams.txt', 'r') as streams:
-        for stream in streams:
-            stream = stream.strip()
-            if not stream:
-                continue
-            playlist += f'#EXTINF:-1 group-title="twitch", {stream}\n'
-            playlist += f'http:///twitch.tv/?streamer={stream}\n'
-
-    return playlist
+print()
 
 
-@app.route(f'/twitch')
-def getm3u():
-    streamer = request.args.get('streamer')
-    url = 'https://pwn.sh/tools/streamapi.py?url=twitch.tv/'
-    try:
-        response = requests.get(f'{url}{streamer}').json()
-        links = response['urls']
-        qualities = {int(key.replace('p','')) : key for key in links.keys() if key != 'audio_only'}
 
-        m3u = ''
-        for quality in sorted(qualities.keys(), reverse=True):
-            m3u = m3u + links[qualities[quality]] + '\n'
-                
-    except:
-        m3u = 'https://raw.githubusercontent.com/benmoose39/YouTube_to_m3u/main/assets/moose_na.m3u'
-    
+
+windows = False
+if 'win' in sys.platform:
+    windows = True
+
+def grab(url):
+    response = requests.get(url, timeout=15).text
+    if '.m3u8' not in response:
+        #response = requests.get(url).text
+        if '.m3u8' not in response:
+            if windows:
+                print('https://raw.githubusercontent.com/Optickal/OptickalTV-test/main/assets/info.m3u8')
+                return
+            #os.system(f'wget {url} -O temp.txt')
+            os.system(f'curl "{url}" > temp.txt')
+            response = ''.join(open('temp.txt').readlines())
+            if '.m3u8' not in response:
+                print('https://raw.githubusercontent.com/Optickal/OptickalTV-test/main/assets/info.m3u8')
+                return
     end = response.find('.m3u8') + 5
     tuner = 100
     while True:
@@ -44,9 +37,20 @@ def getm3u():
         else:
             tuner += 5
     print(f"{link[start : end]}")
+    
+    
 
+#print epg
 print('#EXTM3U x-tvg-url="https://telerising.de/epg/easyepg-basic.gz"')
-print(banner)
+# datetime object containing current date and time
+now = datetime.now()
+# dd/mm/YY H:M
+dt_string = now.strftime("%d/%m/%Y %H:%M")
+print("#EXTINF:-1 , Stand -", dt_string)
+print("https://")
+
+
+
 #s = requests.Session()
 with open('../streams.txt') as f:
     for line in f:
