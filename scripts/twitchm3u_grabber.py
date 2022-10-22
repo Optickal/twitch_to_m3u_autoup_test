@@ -3,9 +3,6 @@ import requests
 import os
 import sys
 
-print()
-
-
 
 
 windows = False
