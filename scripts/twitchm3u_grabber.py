@@ -1,11 +1,7 @@
-from flask import Flask, request
+from daytime import daytime
 import requests
+import is
 import sys
-
-HOST = sys.argv[1]
-PORT = 9001
-
-app = Flask(__name__)
 
 @app.route(f'/playlist.m3u')
 def playlistgenerator():
@@ -42,7 +38,7 @@ def getm3u():
     while True:
         if 'https://' in response[end-tuner : end]:
             link = response[end-tuner : end]
-            start = link.find('https://')
+            start = link.find('"720p60": "https://')
             end = link.find('.m3u8') + 5
             break
         else:
