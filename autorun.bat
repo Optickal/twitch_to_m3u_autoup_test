@@ -1,3 +1,4 @@
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python server.py 127.0.0.1
+pip install requests
+
+cd scripts/
+python twitch_m3ugrabber.py > ../twitch.m3u
